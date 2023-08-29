@@ -1,0 +1,37 @@
+﻿@model List<BillerFormDataset>
+
+@{
+    ViewData["Title"] = "Biller Form Datasets";
+}
+<a class="btn btn-primary" asp-action="Create">Create</a>
+<h2>Biller Form Datasets</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Dataset Name</th>
+            <th>Unique Id</th>
+            <th>Biller</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var dataset in Model)
+        {
+            <tr>
+                <td>@dataset.Id</td>
+                <td>@dataset.DatasetName</td>
+                <td>@dataset.UniqueId</td>
+                <td>@dataset.Biller.Name</td>
+                <td>@(dataset.CreatedAt.HasValue ? dataset.CreatedAt.Value.ToString("yyyy-MM-dd HH:mm:ss") : "")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@dataset.Id">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@dataset.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@dataset.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

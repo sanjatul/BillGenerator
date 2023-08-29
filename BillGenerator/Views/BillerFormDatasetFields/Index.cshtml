@@ -1,0 +1,41 @@
+﻿@model List<BillerFormDatasetField>
+
+@{
+    ViewData["Title"] = "Biller Form Dataset Fields";
+}
+
+<h2>Biller Form Dataset Fields</h2>
+<a class="btn btn-primary" asp-action="Create">Create</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Field Name</th>
+            <th>Is Mandatory</th>
+            <th>Max Length</th>
+            <th>Field Type</th>
+            <th>Dataset</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var field in Model)
+        {
+            <tr>
+                <td>@field.Id</td>
+                <td>@field.FieldName</td>
+                <td>@(field.IsMandatory.HasValue ? field.IsMandatory.Value.ToString() : "")</td>
+                <td>@field.MaxLength</td>
+                <td>@field.FieldType.Description</td>
+                <td>@field.Dataset.DatasetName</td>
+                <td>@(field.CreatedAt.HasValue ? field.CreatedAt.Value.ToString("yyyy-MM-dd HH:mm:ss") : "")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@field.Id">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@field.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@field.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
