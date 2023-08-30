@@ -201,7 +201,7 @@
         function clearItem() {
             $("#FieldName").val('');
             $("#MaxLength").val('');
-            ("#regex").val('');
+            $("#regex").val('');
             $("#CreatedBy").val('');
             $("#CreatedAt").val('');
             $("#minValue").val('');
@@ -210,21 +210,21 @@
             $("#friendlyFieldName").val('');
             $("#UpdatedBy").val('');
             $("#UpdatedAt").val('');
-            const isMandatory = document.querySelector("input[name='SelectedValueForMandatory']");
+            //const isMandatory = document.querySelector("input[name='SelectedValueForMandatory']");
 
-            for (let radioButton of isMandatory) {
-                radioButton.checked = false;
-            }
-            const isActive = document.querySelector("input[name='SelectedValueActive']");
+            //for (let radioButton of isMandatory) {
+            //    radioButton.checked = false;
+            //}
+            //const isActive = document.querySelector("input[name='SelectedValueActive']");
 
-            for (let radioButton of isActive) {
-                radioButton.checked = false;
-            }
-            const fieldTypeDropdown = document.getElementById("fieldTypeId");
-            fieldTypeDropdown.selectedIndex = -1;
+            //for (let radioButton of isActive) {
+            //    radioButton.checked = false;
+            //}
+            //const fieldTypeDropdown = document.getElementById("fieldTypeId");
+            //fieldTypeDropdown.selectedIndex = -1;
 
-            const datasetDropdown = document.getElementById("datasetId");
-            datasetDropdown.selectedIndex = -1;
+            //const datasetDropdown = document.getElementById("datasetId");
+            //datasetDropdown.selectedIndex = -1;
         }
         // After Add A New Order In The List, If You Want, You Can Remove It.
         $(document).on('click', 'a.deleteItem', function (e) {
@@ -239,12 +239,14 @@
         });
         //After Click Save Button Pass All Data View To Controller For Save Database
         function saveOrder(data) {
+            var jsonData = JSON.stringify(data);
+            console.log(data);
             return $.ajax({
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 type: 'POST',
-                url: "/Orders/SaveOrder",
-                data: data,
+                url: "/Home/SaveOrder",
+                data: jsonData,
                 success: function (result) {
                     alert(result);
                     location.reload();
@@ -254,6 +256,8 @@
                 }
             });
         }
+
+
         //Collect Multiple Order List For Pass To Controller
         $("#saveOrder").click(function (e) {
             e.preventDefault();
@@ -263,19 +267,38 @@
 
             $.each($("#detailsTable tbody tr"), function () {
                 orderArr.push({
-                    productName: $(this).find('td:eq(0)').html(),
-                    quantity: $(this).find('td:eq(1)').html(),
-                    price: $(this).find('td:eq(2)').html(),
-                    amount: $(this).find('td:eq(3)').html()
+
+                    fieldName : $(this).find('td:eq(0)').html(),
+                    maxLength: $(this).find('td:eq(1)').html(),
+                    regex: $(this).find('td:eq(2)').html(),
+                    createdBy: $(this).find('td:eq(3)').html(),
+                    createdAt: $(this).find('td:eq(4)').html(),
+                    minValue: $(this).find('td:eq(5)').html(),
+                    maxValue: $(this).find('td:eq(6)').html(),
+                    fieldOrder: $(this).find('td:eq(7)').html(),
+                    friendlyFieldName: $(this).find('td:eq(8)').html(),
+                    updatedBy: $(this).find('td:eq(9)').html(),
+                    updatedAt: $(this).find('td:eq(10)').html(),
+                    isMandatory: $(this).find('td:eq(11)').html(),
+                    isActive: $(this).find('td:eq(12)').html(),
+                    fieldTypeId: $(this).find('td:eq(13)').html(),
+                    datasetId: $(this).find('td:eq(14)').html()
                 });
             });
+            
 
+            var data = {
+                datasetName: $("#datasetName").val(),
+                uniqueId: $("#uniqueId").val(),
+                billerId: $("#billerId").val(),
+                createdBy: $("#createdBy").val(),
+                createdAt: $("#createdAt").val(),
+                updatedBy: $("#updatedBy").val(),
+                updatedAt: $("#updatedAt").val(),
+                order: orderArr 
+            };
 
-            var data = JSON.stringify({
-                name: $("#name").val(),
-                address: $("#address").val(),
-                order: orderArr
-            });
+           
 
             $.when(saveOrder(data)).then(function (response) {
                 console.log(response);
@@ -283,5 +306,7 @@
                 console.log(err);
             });
         });
+
+
     </script>
 }
