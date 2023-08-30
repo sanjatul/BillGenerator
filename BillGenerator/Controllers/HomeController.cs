@@ -1,32 +1,51 @@
 ﻿using BillGenerator.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 
 namespace BillGenerator.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+      private readonly BillerDemoDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(BillerDemoDbContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
+
             return View();
         }
-
-        public IActionResult Privacy()
+        public IActionResult Create()
         {
-            return View();
+            ViewBag.BillerList = new SelectList(_context.Billers, "Id", "Name");
+            ViewBag.FieldTypeList = new SelectList(_context.BillerFormFieldTypes, "Id", "Description");
+            ViewBag.DatasetList = new SelectList(_context.BillerFormDatasets, "Id", "DatasetName");
+            BillerFormDataset billerFormDataset = new BillerFormDataset();
+            billerFormDataset.BillerFormDatasetFields.Add(new BillerFormDatasetField());
+            
+            return View(billerFormDataset);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(BillerFormDataset model)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            if (ModelState.IsValid)
+            {
+                _context.BillerFormDatasets.Add(model);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.BillerList = new SelectList(_context.Billers, "Id", "Name");
+            ViewBag.FieldTypeList = new SelectList(_context.BillerFormFieldTypes, "Id", "Description");
+            ViewBag.DatasetList = new SelectList(_context.BillerFormDatasets, "Id", "DatasetName");
+            return View(model);
         }
+
     }
 }

@@ -24,5 +24,5 @@ public partial class BillerFormDataset
     [ValidateNever]
     public virtual Biller Biller { get; set; } = null!;
 
-    public virtual ICollection<BillerFormDatasetField> BillerFormDatasetFields { get; set; } = new List<BillerFormDatasetField>();
+    public virtual List<BillerFormDatasetField> BillerFormDatasetFields { get; set; } = new List<BillerFormDatasetField>();
 }

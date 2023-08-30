@@ -40,7 +40,7 @@ public partial class BillerFormDatasetField
 
     public virtual ICollection<BillerFormDatasetFieldValue> BillerFormDatasetFieldValues { get; set; } = new List<BillerFormDatasetFieldValue>();
     [ValidateNever]
-    public virtual BillerFormDataset Dataset { get; set; } = null!;
+    public virtual BillerFormDataset Dataset { get; private set; }
     [ValidateNever]
     public virtual BillerFormFieldType FieldType { get; set; } = null!;
 }
