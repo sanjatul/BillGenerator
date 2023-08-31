@@ -12,7 +12,7 @@ namespace BillGenerator.Abstractions.Requests
         public long? UpdatedBy { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
-        public List<OrderField>? Order { get; set; }
+       public List<OrderField>? Order { get; set; }
     }
 
     public class OrderField
@@ -31,7 +31,6 @@ namespace BillGenerator.Abstractions.Requests
         public int? IsMandatory { get; set; }
         public int? IsActive { get; set; }
         public long FieldTypeId { get; set; }
-        public long DatasetId { get; set; }
     }
 
 }

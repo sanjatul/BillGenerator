@@ -109,10 +109,10 @@
                             @Html.DropDownList("SelectedValue", (IEnumerable<SelectListItem>)ViewBag.FieldTypeList, "-- Select --", new { @class = "form-control" ,@id="fieldTypeId"})
                         </div>
 
-                        <div class="form-group">
+                     @*   <div class="form-group">
                             <label>Dataset</label>
                             @Html.DropDownList("SelectedValue", (IEnumerable<SelectListItem>)ViewBag.DatasetList, "-- Select --", new { @class = "form-control",@id="datasetId" })
-                        </div>
+                        </div>*@
 
                         <div class="form-group">
                             <label>Is Mandatory</label>
@@ -150,7 +150,7 @@
                             <th>IsMandatory</th>
                             <th>IsActive</th>
                             <th>Field Type</th>
-                            <th>Dataset</th>
+                        @*    <th>Dataset</th>*@
                             <th></th>
                         </tr>
                     </thead>
@@ -174,7 +174,7 @@
         $("#addToList").click(function (e) {
             e.preventDefault();
 
-            if ($.trim($("#fieldTypeId").val()) == "" || $.trim($("#datasetId").val()) == "") return;
+            if ($.trim($("#fieldTypeId").val()) == "" ) return;
 
             var FieldName = $("#FieldName").val(),
                 MaxLength = $("#MaxLength").val(),
@@ -190,10 +190,9 @@
                 IsMandatory = document.querySelector("input[name='SelectedValueForMandatory']:checked").value,
                 IsActive = document.querySelector("input[name='SelectedValueActive']:checked").value,
                 FieldType = $("#fieldTypeId").val(),
-                Dataset = $("#datasetId").val(),
                 detailsTableBody = $("#detailsTable tbody");
 
-            var productItem = '<tr><td>' + FieldName + '</td><td>' + MaxLength + '</td><td>' + Regex + '</td><td>' + CreatedBy + '</td><td>' + CreatedAt + '</td><td>' + MinValue + '</td><td>' + MaxValue + '</td><td>' + FieldOrder + '</td><td>' + FriendlyFieldName + '</td><td>' + UpdatedBy + '</td><td>' + UpdatedAt + '</td><td>' + IsMandatory + '</td><td>' + IsActive + '</td><td>' + FieldType + '</td><td>' + Dataset + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
+            var productItem = '<tr><td>' + FieldName + '</td><td>' + MaxLength + '</td><td>' + Regex + '</td><td>' + CreatedBy + '</td><td>' + CreatedAt + '</td><td>' + MinValue + '</td><td>' + MaxValue + '</td><td>' + FieldOrder + '</td><td>' + FriendlyFieldName + '</td><td>' + UpdatedBy + '</td><td>' + UpdatedAt + '</td><td>' + IsMandatory + '</td><td>' + IsActive + '</td><td>' + FieldType + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
             detailsTableBody.append(productItem);
             clearItem();
         });
@@ -210,21 +209,6 @@
             $("#friendlyFieldName").val('');
             $("#UpdatedBy").val('');
             $("#UpdatedAt").val('');
-            //const isMandatory = document.querySelector("input[name='SelectedValueForMandatory']");
-
-            //for (let radioButton of isMandatory) {
-            //    radioButton.checked = false;
-            //}
-            //const isActive = document.querySelector("input[name='SelectedValueActive']");
-
-            //for (let radioButton of isActive) {
-            //    radioButton.checked = false;
-            //}
-            //const fieldTypeDropdown = document.getElementById("fieldTypeId");
-            //fieldTypeDropdown.selectedIndex = -1;
-
-            //const datasetDropdown = document.getElementById("datasetId");
-            //datasetDropdown.selectedIndex = -1;
         }
         // After Add A New Order In The List, If You Want, You Can Remove It.
         $(document).on('click', 'a.deleteItem', function (e) {
@@ -281,8 +265,8 @@
                     updatedAt: $(this).find('td:eq(10)').html(),
                     isMandatory: $(this).find('td:eq(11)').html(),
                     isActive: $(this).find('td:eq(12)').html(),
-                    fieldTypeId: $(this).find('td:eq(13)').html(),
-                    datasetId: $(this).find('td:eq(14)').html()
+                    fieldTypeId: $(this).find('td:eq(13)').html()
+                   
                 });
             });
             

@@ -45,7 +45,7 @@ namespace BillGenerator.Controllers
                     int? intMandatory = orderItem.IsMandatory; // or any other integer value
                     bool boolMandatory = intMandatory != 0;
                     int? intActive = orderItem.IsActive; // or any other integer value
-                     bool boolActive = intActive != 0;
+                    bool boolActive = intActive != 0;
                     // Create an OrderItem object and add it to the list
                     BillerFormDatasetField billerFormDatasetField = new BillerFormDatasetField
                     {
@@ -63,14 +63,14 @@ namespace BillGenerator.Controllers
                         FriendlyFieldName = orderItem.FriendlyFieldName,
                         IsMandatory = boolMandatory,
                         IsActive = boolActive,
-                        FieldTypeId = orderItem.DatasetId,
-                        DatasetId = orderItem.DatasetId
+                        FieldTypeId = orderItem.FieldTypeId,
+                        Dataset = billerFormDataset
 
                     };
 
-                    _context.BillerFormDatasetFields.Add(billerFormDatasetField);
+                   _context.BillerFormDatasetFields.Add(billerFormDatasetField);
                 }
-                _context.SaveChanges();
+                 _context.SaveChanges();
                 return Json(new { success = true, message = "Data processed successfully" });
             }
             catch (Exception ex)
