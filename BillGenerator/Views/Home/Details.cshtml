@@ -1,0 +1,102 @@
+﻿@model BillGenerator.Models.BillerFormDataset
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+<div>
+    <h4>Biller Form Dataset</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DatasetName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DatasetName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UniqueId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UniqueId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreatedAt)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UpdatedBy)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UpdatedBy)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UpdatedAt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UpdatedAt)
+        </dd>
+        <dt class="col-sm-2">
+            Biller Name
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Biller.Name)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <h4>Biller Form Dataset Fields</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Field Name</th>
+                <th>Is Mandatory</th>
+                <th>Max Length</th>
+                <th>Regex</th>
+                <th>Min Value</th>
+                <th>Max Value</th>
+                <th>Field Order</th>
+                <th>Friendly Field Name</th>
+                <th>Is Active</th>
+                <th>Created By</th>
+                <th>Created At</th>
+                <th>Updated By</th>
+                <th>Updated At</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var field in Model.BillerFormDatasetFields)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(model => field.FieldName)</td>
+                    <td>@(field.IsMandatory == true ? "Yes" : "No")</td>
+                    <td>@field.MaxLength</td>
+                    <td>@Html.DisplayFor(model => field.Regex)</td>
+                    <td>@field.MinValue</td>
+                    <td>@field.MaxValue</td>
+                    <td>@field.FieldOrder</td>
+                    <td>@Html.DisplayFor(model => field.FriendlyFieldName)</td>
+                    <td>@(field.IsActive == true ? "Yes" : "No")</td>
+                    <td>@Html.DisplayFor(model => field.CreatedBy)</td>
+                    <td>@Html.DisplayFor(model => field.CreatedAt)</td>
+                    <td>@Html.DisplayFor(model => field.UpdatedBy)</td>
+                    <td>@Html.DisplayFor(model => field.UpdatedAt)</td>
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a asp-action="Index" class="btn btn-primary">Back To List</a>
+</div>
+

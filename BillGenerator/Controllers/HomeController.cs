@@ -2,26 +2,31 @@
 using BillGenerator.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace BillGenerator.Controllers
 {
     public class HomeController : Controller
     {
-      private readonly BillerDemoDbContext _context;
+        private readonly BillerDemoDbContext _context;
 
         public HomeController(BillerDemoDbContext context)
         {
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
+        {
+            List<BillerFormDataset> billerFormDatasets = await _context.BillerFormDatasets.ToListAsync();
+            return View(billerFormDatasets);
+        }
+
+        public IActionResult Create()
         {
             ViewBag.BillerList = new SelectList(_context.Billers, "Id", "Name");
             ViewBag.FieldTypeList = new SelectList(_context.BillerFormFieldTypes, "Id", "Description");
-            ViewBag.DatasetList = new SelectList(_context.BillerFormDatasets, "Id", "DatasetName");
             return View();
         }
-       
         [HttpPost]
         public IActionResult SaveOrder([FromBody] OrderCreate orderCreate)
         {
@@ -38,6 +43,7 @@ namespace BillGenerator.Controllers
                     UpdatedBy = orderCreate.UpdatedBy,
                     UpdatedAt = orderCreate.UpdatedAt
                 };
+
                 _context.BillerFormDatasets.Add(billerFormDataset);
 
                 foreach (OrderField orderItem in orderCreate.Order)
@@ -68,9 +74,10 @@ namespace BillGenerator.Controllers
 
                     };
 
-                   _context.BillerFormDatasetFields.Add(billerFormDatasetField);
+                    _context.BillerFormDatasetFields.Add(billerFormDatasetField);
                 }
-                 _context.SaveChanges();
+                _context.SaveChanges();
+
                 return Json(new { success = true, message = "Data processed successfully" });
             }
             catch (Exception ex)
@@ -78,6 +85,100 @@ namespace BillGenerator.Controllers
                 return Json(new { success = false, message = "An error occurred: " + ex.Message });
             }
         }
+        public async Task<IActionResult> Details(long? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var dataset = await _context.BillerFormDatasets
+                .Include(d => d.Biller)
+                .Include(d => d.BillerFormDatasetFields)
+                .FirstOrDefaultAsync(d => d.Id == id);
+
+            if (dataset == null)
+            {
+                return NotFound();
+            }
+            return View(dataset);
+        }
+
+        public async Task<IActionResult> Edit(long? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var dataset = await _context.BillerFormDatasets
+                .Include(d => d.Biller)
+                .Include(d => d.BillerFormDatasetFields)
+                .FirstOrDefaultAsync(d => d.Id == id);
+
+            if (dataset == null)
+            {
+                return NotFound();
+            }
+            ViewBag.BillerList = new SelectList(_context.Billers, "Id", "Name");
+            ViewBag.FieldTypeList = new SelectList(_context.BillerFormFieldTypes, "Id", "Description");
+            return View(dataset);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(BillerFormDataset billerFormDataset)
+        {
+            if (!ModelState.IsValid)
+            {
+                View(billerFormDataset);
+            }
+            _context.BillerFormDatasets.Update(billerFormDataset);
+            foreach (BillerFormDatasetField fields in billerFormDataset.BillerFormDatasetFields)
+            {
+                _context.BillerFormDatasetFields.Update(fields);
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> RemoveDataFields(int? fieldId, int? datasetId)
+        {
+            if (fieldId is null || fieldId == 0 || datasetId == 0 || datasetId is null)
+            {
+                return Json(new { success = false });
+            }
+            var billerFormDatasetField = await _context.BillerFormDatasetFields.FirstOrDefaultAsync(x=>x.Id== fieldId);
+            if (billerFormDatasetField == null)
+            {
+                return Json(new { success = false });
+            }
+            _context.BillerFormDatasetFields.Remove(billerFormDatasetField);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Edit", new { id = datasetId });
+        }
+        public async Task<IActionResult> Delete(long? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+           var dataset = await _context.BillerFormDatasets
+          .Include(d => d.Biller)
+          .Include(d => d.BillerFormDatasetFields)
+          .FirstOrDefaultAsync(d => d.Id == id);
+            foreach (BillerFormDatasetField billerField in dataset.BillerFormDatasetFields)
+            {
+                var item = await _context.BillerFormDatasetFields.FirstOrDefaultAsync(x=>x.Id==billerField.Id);
+                if(item != null)
+                {
+                    _context.BillerFormDatasetFields.Remove(item);
+                }
+            }
+            await _context.SaveChangesAsync();
+
+            _context.BillerFormDatasets.Remove(dataset);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
     }
 }

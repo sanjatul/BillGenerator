@@ -1,0 +1,321 @@
+﻿@model BillerFormDataset
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-6"> <h1>Edit Biller Data Set</h1> </div>
+            <div class="col-md-6"><a asp-action="Index" class="btn btn-secondary">Return To List</a></div>
+        </div>
+        
+    </div> 
+    <form method="post" asp-action="Edit">
+        <div class="card-body">
+
+            <div class="form-horizontal">
+                <div class="row">
+                    <h5 class="card-title">Edit Biller Dataset</h5>
+                   <input hidden asp-for="Id" />
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Dataset Name</label>
+                            <input id="datasetName" asp-for="DatasetName" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Unique Id</label>
+                            <input id="uniqueId" asp-for="UniqueId" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Biller</label>
+                            @Html.DropDownListFor(model => model.BillerId, (SelectList)ViewBag.BillerList, "Select a Biller", new { @class = "form-control" ,@id="billerId"})
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Created By</label>
+                            <input id="createdBy" asp-for="CreatedBy" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Created At</label>
+                            <input id="createdAt" asp-for="CreatedAt" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Updated By</label>
+                            <input id="updatedBy" asp-for="UpdatedBy" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Updated At</label>
+                            <input id="updatedAt" asp-for="UpdatedAt" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-horizontal mb-3">
+                <div class="row pt-4">
+                    <h2 class="card-title border border-1 bg-light ">Edit Biller Dataset Fields</h2>
+
+                    @for (var i = 0; i < Model.BillerFormDatasetFields.Count; i++)
+                    {
+                        <h3>Dataset Fields</h3>
+                        <input hidden asp-for="BillerFormDatasetFields[i].Id" />
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label asp-for="BillerFormDatasetFields[i].FieldName">Field Name</label>
+                                <input asp-for="BillerFormDatasetFields[i].FieldName" class="form-control" />
+                            </div>
+                          
+                            <div class="form-group">
+                                <label asp-for="BillerFormDatasetFields[i].MaxLength"></label>
+                                <input asp-for="BillerFormDatasetFields[i].MaxLength" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="BillerFormDatasetFields[i].Regex"></label>
+                                <input asp-for="BillerFormDatasetFields[i].Regex" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="BillerFormDatasetFields[i].CreatedBy"></label>
+                                <input asp-for="BillerFormDatasetFields[i].CreatedBy" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="BillerFormDatasetFields[i].CreatedAt"></label>
+                                <input asp-for="BillerFormDatasetFields[i].CreatedAt" class="form-control" />
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-4">
+
+                            <div class="form-group">
+                                <label asp-for="BillerFormDatasetFields[i].MinValue"></label>
+                                <input asp-for="BillerFormDatasetFields[i].MinValue" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="BillerFormDatasetFields[i].MaxValue"></label>
+                                <input asp-for="BillerFormDatasetFields[i].MaxValue" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="BillerFormDatasetFields[i].FieldOrder"></label>
+                                <input asp-for="BillerFormDatasetFields[i].FieldOrder" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="BillerFormDatasetFields[i].FriendlyFieldName"></label>
+                                <input asp-for="BillerFormDatasetFields[i].FriendlyFieldName" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="BillerFormDatasetFields[i].UpdatedBy"></label>
+                                <input asp-for="BillerFormDatasetFields[i].UpdatedBy" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="BillerFormDatasetFields[i].UpdatedAt"></label>
+                                <input asp-for="BillerFormDatasetFields[i].UpdatedAt" class="form-control" />
+                            </div>
+
+                        </div>
+                        <div class="col-sm-4">
+
+
+                            <div class="form-group">
+                                <label>Field Type</label>
+                                @Html.DropDownListFor(model => model.BillerFormDatasetFields[i].FieldTypeId, (SelectList)ViewBag.FieldTypeList, "-- Select --", new { @class = "form-control"})
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="BillerFormDatasetFields[i].IsActive">Is Active</label>
+
+                                <div>
+                                    <input type="radio" asp-for="BillerFormDatasetFields[i].IsMandatory" value="true" /> Yes
+                                    <input type="radio" asp-for="BillerFormDatasetFields[i].IsMandatory" value="false" /> No
+                                </div>
+                            </div>
+                                <div class="form-group">
+                                    <label asp-for="BillerFormDatasetFields[i].IsActive">Is Active</label>
+
+                                    <div>
+                                        <input type="radio" asp-for="BillerFormDatasetFields[i].IsActive" value="true" /> Yes
+                                        <input type="radio" asp-for="BillerFormDatasetFields[i].IsActive" value="false" /> No
+                                    </div>
+                                </div>        
+                            <div class="col-md-4 col-lg-offset-4">
+                                <a onclick="removeFromList(@Model.BillerFormDatasetFields[i].Id, @Model.Id)" class="btn btn-danger">Remove</a>
+                            </div>
+                        </div>
+                    }
+            
+                </div>
+
+           @*     <table id="detailsTable" class="table">
+                    <thead class="mt-4">
+                        <tr>
+                            <th>Field Name</th>
+                            <th>Max Length</th>
+                            <th>Regex</th>
+                            <th>Created By</th>
+
+                            <th>Created At</th>
+                            <th>Min Value</th>
+                            <th>Max Value</th>
+                            <th>Field Order</th>
+                            <th>Friendly Field Name</th>
+
+                            <th>Updated By</th>
+                            <th>Updated At</th>
+                            <th>IsMandatory</th>
+                            <th>IsActive</th>
+                            <th>Field Type</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>*@
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Save Details</button>
+        </div>
+    </form>
+
+</div>
+
+
+@section scripts{
+    <script>
+        function removeFromList(fieldId,datasetId) {
+            $.ajax({
+                url: '/Home/RemoveDataFields', // Replace with your actual controller and action
+                type: 'POST', // or 'GET' depending on your server-side action
+                data: { fieldId: fieldId, datasetId: datasetId },
+                success: function () {
+                    // Reload the page or update the UI as needed
+                    location.reload(); // This will reload the current page
+                },
+                error: function () {
+                    alert('An error occurred while removing the item.');
+                }
+            });
+        }
+
+        ////Add Multiple Order.
+        //$("#addToList").click(function (e) {
+        //    e.preventDefault();
+
+        //    if ($.trim($("#fieldTypeId").val()) == "") return;
+
+        //    var FieldName = $("#FieldName").val(),
+        //        MaxLength = $("#MaxLength").val(),
+        //        Regex = $("#regex").val(),
+        //        CreatedBy = $("#CreatedBy").val(),
+        //        CreatedAt = $("#CreatedAt").val(),
+        //        MinValue = $("#minValue").val(),
+        //        MaxValue = $("#maxValue").val(),
+        //        FieldOrder = $("#fieldOrder").val(),
+        //        FriendlyFieldName = $("#friendlyFieldName").val(),
+        //        UpdatedBy = $("#UpdatedBy").val(),
+        //        UpdatedAt = $("#UpdatedAt").val(),
+        //        IsMandatory = document.querySelector("input[name='SelectedValueForMandatory']:checked").value,
+        //        IsActive = document.querySelector("input[name='SelectedValueActive']:checked").value,
+        //        FieldType = $("#fieldTypeId").val(),
+        //        detailsTableBody = $("#detailsTable tbody");
+
+        //    var productItem = '<tr><td>' + FieldName + '</td><td>' + MaxLength + '</td><td>' + Regex + '</td><td>' + CreatedBy + '</td><td>' + CreatedAt + '</td><td>' + MinValue + '</td><td>' + MaxValue + '</td><td>' + FieldOrder + '</td><td>' + FriendlyFieldName + '</td><td>' + UpdatedBy + '</td><td>' + UpdatedAt + '</td><td>' + IsMandatory + '</td><td>' + IsActive + '</td><td>' + FieldType + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
+        //    detailsTableBody.append(productItem);
+        //    clearItem();
+        //});
+        ////After Add A New Order In The List, Clear Clean The Form For Add More Order.
+        //function clearItem() {
+        //    $("#FieldName").val('');
+        //    $("#MaxLength").val('');
+        //    $("#regex").val('');
+        //    $("#CreatedBy").val('');
+        //    $("#CreatedAt").val('');
+        //    $("#minValue").val('');
+        //    $("#maxValue").val('');
+        //    $("#fieldOrder").val('');
+        //    $("#friendlyFieldName").val('');
+        //    $("#UpdatedBy").val('');
+        //    $("#UpdatedAt").val('');
+        //}
+        //// After Add A New Order In The List, If You Want, You Can Remove It.
+        //$(document).on('click', 'a.deleteItem', function (e) {
+        //    e.preventDefault();
+        //    var $self = $(this);
+        //    if ($(this).attr('data-itemId') == "0") {
+        //        $(this).parents('tr').css("background-color", "#ff6347").fadeOut(800, function () {
+        //            $(this).remove();
+        //        });
+        //    }
+        //    clearItem();
+        //});
+        ////After Click Save Button Pass All Data View To Controller For Save Database
+        //function saveOrder(data) {
+        //    var jsonData = JSON.stringify(data);
+        //    console.log(data);
+        //    return $.ajax({
+        //        contentType: 'application/json; charset=utf-8',
+        //        dataType: 'json',
+        //        type: 'POST',
+        //        url: "/Home/SaveOrder",
+        //        data: jsonData,
+        //        success: function (result) {
+        //            //alert(result);
+        //            location.reload();
+        //        },
+        //        error: function () {
+        //            alert("Error!")
+        //        }
+        //    });
+        //}
+
+
+        ////Collect Multiple Order List For Pass To Controller
+        //$("#saveOrder").click(function (e) {
+        //    e.preventDefault();
+
+        //    var orderArr = [];
+        //    orderArr.length = 0;
+
+        //    $.each($("#detailsTable tbody tr"), function () {
+        //        orderArr.push({
+
+        //            fieldName: $(this).find('td:eq(0)').html(),
+        //            maxLength: $(this).find('td:eq(1)').html(),
+        //            regex: $(this).find('td:eq(2)').html(),
+        //            createdBy: $(this).find('td:eq(3)').html(),
+        //            createdAt: $(this).find('td:eq(4)').html(),
+        //            minValue: $(this).find('td:eq(5)').html(),
+        //            maxValue: $(this).find('td:eq(6)').html(),
+        //            fieldOrder: $(this).find('td:eq(7)').html(),
+        //            friendlyFieldName: $(this).find('td:eq(8)').html(),
+        //            updatedBy: $(this).find('td:eq(9)').html(),
+        //            updatedAt: $(this).find('td:eq(10)').html(),
+        //            isMandatory: $(this).find('td:eq(11)').html(),
+        //            isActive: $(this).find('td:eq(12)').html(),
+        //            fieldTypeId: $(this).find('td:eq(13)').html()
+
+        //        });
+        //    });
+
+
+        //    var data = {
+        //        datasetName: $("#datasetName").val(),
+        //        uniqueId: $("#uniqueId").val(),
+        //        billerId: $("#billerId").val(),
+        //        createdBy: $("#createdBy").val(),
+        //        createdAt: $("#createdAt").val(),
+        //        updatedBy: $("#updatedBy").val(),
+        //        updatedAt: $("#updatedAt").val(),
+        //        order: orderArr
+        //    };
+
+
+
+        //    $.when(saveOrder(data)).then(function (response) {
+        //        console.log(response);
+        //    }).fail(function (err) {
+        //        console.log(err);
+        //    });
+        //});
+
+
+    </script>
+}
