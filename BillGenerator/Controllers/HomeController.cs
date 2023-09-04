@@ -1,8 +1,10 @@
-﻿using BillGenerator.Abstractions.Requests;
+﻿using BillGenerator.Abstractions;
+using BillGenerator.Abstractions.Requests;
 using BillGenerator.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace BillGenerator.Controllers
 {
@@ -17,8 +19,7 @@ namespace BillGenerator.Controllers
 
         public async Task<IActionResult> Index()
         {
-            List<BillerFormDataset> billerFormDatasets = await _context.BillerFormDatasets.ToListAsync();
-            return View(billerFormDatasets);
+            return View();
         }
 
         public IActionResult Create()
@@ -153,8 +154,49 @@ namespace BillGenerator.Controllers
             }
             _context.BillerFormDatasetFields.Remove(billerFormDatasetField);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Edit", new { id = datasetId });
+            return Json(new { success = true, message = "Data processed successfully" });
+            //return RedirectToAction("Edit", new { id = datasetId });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddDataFields([FromBody] UpdateOrder updateOrder)
+        {
+            
+
+                foreach (var orderItem in updateOrder.Order)
+                {
+                    int? intMandatory = orderItem.IsMandatory; // or any other integer value
+                    bool boolMandatory = intMandatory != 0;
+                    int? intActive = orderItem.IsActive; // or any other integer value
+                    bool boolActive = intActive != 0;
+                    // Create an OrderItem object and add it to the list
+                    BillerFormDatasetField billerFormDatasetField = new BillerFormDatasetField
+                    {
+
+                        FieldName = orderItem.FieldName,
+                        MaxLength = orderItem.MaxLength,
+                        Regex = orderItem.Regex,
+                        CreatedBy = orderItem.CreatedBy,
+                        CreatedAt = orderItem.CreatedAt,
+                        MinValue = orderItem.MinValue,
+                        MaxValue = orderItem.MaxValue,
+                        UpdatedBy = orderItem.UpdatedBy,
+                        UpdatedAt = orderItem.UpdatedAt,
+                        FieldOrder = orderItem.FieldOrder,
+                        FriendlyFieldName = orderItem.FriendlyFieldName,
+                        IsMandatory = boolMandatory,
+                        IsActive = boolActive,
+                        FieldTypeId = orderItem.FieldTypeId,
+                        DatasetId=updateOrder.Id
+                    };
+
+                    _context.BillerFormDatasetFields.Add(billerFormDatasetField);
+                }
+                await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Data processed successfully" });
+
+        }
+
         public async Task<IActionResult> Delete(long? id)
         {
             if (id == null)
@@ -180,5 +222,14 @@ namespace BillGenerator.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+
+        #region API CALLS
+        public  async Task<IActionResult> GetAll()
+        {
+            List<BillerFormDataset> billerFormDatasets = await _context.BillerFormDatasets.ToListAsync();
+            return Json(new { data = billerFormDatasets });
+        }
+        #endregion
+
     }
 }

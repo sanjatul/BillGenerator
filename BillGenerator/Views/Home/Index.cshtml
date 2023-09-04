@@ -4,7 +4,7 @@
         <h1>Biller Form Datasets</h1>
         <a asp-action="Create" class="btn btn-success">Create</a>
     </div>
-    <table class="table">
+    <table id="tblData" class="table table-bordered table-striped" style="width:100%">
         <thead>
             <tr>
                 <th>Dataset Name</th>
@@ -15,25 +15,40 @@
                 <th>Updated At</th>
                 <th>Actions</th>
             </tr>
-        </thead>
-        <tbody>
-
-            @foreach (var dataset in Model)
-            {
-                <tr>
-                    <td>@dataset.DatasetName</td>
-                    <td>@dataset.UniqueId</td>
-                    <td>@dataset.CreatedBy</td>
-                    <td>@dataset.CreatedAt</td>
-                    <td>@dataset.UpdatedBy</td>
-                    <td>@dataset.UpdatedAt</td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@dataset.Id" class="btn btn-primary btn-sm"><i class="bi bi-eye"></i> Details</a>
-                        <a asp-action="Edit" asp-route-id="@dataset.Id" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i> Edit</a>
-                        <a asp-action="Delete" asp-route-id="@dataset.Id" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
+        </thead>        
     </table>
 </div>
+
+@section scripts{
+    <script>
+var dataTable;
+
+$(document).ready(function () {
+    loadDataTable();
+});
+
+function loadDataTable() {
+    dataTable = $('#tblData').DataTable({
+        "ajax": { url: '/home/getall' },
+        "columns": [
+            { data: 'datasetName' },
+            { data: 'uniqueId' },
+            { data: 'createdBy' },
+            { data: 'createdAt' },
+            { data: 'updatedBy' },
+            { data: 'updatedAt' },
+            {
+                data: 'id',
+                "render": function (data) {
+                    return `<div class="w-75 btn-group" role="group">
+                     <a href="/home/details?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i> Details</a>               
+                     <a href="/home/edit?id=${data}" class="btn btn-secondary mx-2"> <i class="bi bi-pencil-square"></i> Edit</a>               
+                     <a href="/home/delete?id=${data}" class="btn btn-danger mx-2"> <i class="bi bi-pencil-square"></i>Delete</a>               
+                    </div>`
+                }
+            }
+        ]
+    });
+}
+    </script>
+}
