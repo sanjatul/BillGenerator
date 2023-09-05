@@ -308,7 +308,8 @@
             e.preventDefault();
 
             if ($.trim($("#fieldTypeId").val()) == "") return;
-
+            var selectedMandatoryElement = document.querySelector("input[name='SelectedValueForMandatory']:checked");
+            var selectedActiveElement = document.querySelector("input[name='SelectedValueActive']:checked");
             var addFieldName = $("#addFieldName").val(),
                 addMaxLength = $("#addMaxLength").val(),
                 addRegex = $("#addRegex").val(),
@@ -320,8 +321,8 @@
                 FriendlyFieldName = $("#friendlyFieldName").val(),
                 addUpdatedBy = $("#addUpdatedBy").val(),
                 addUpdatedAt = $("#addUpdatedAt").val(),
-                IsMandatory = document.querySelector("input[name='SelectedValueForMandatory']:checked").value,
-                IsActive = document.querySelector("input[name='SelectedValueActive']:checked").value,
+                IsMandatory = selectedMandatoryElement ? selectedMandatoryElement.value : "",
+                IsActive = selectedActiveElement ? selectedActiveElement.value : "",
                 FieldType = $("#fieldTypeId").val(),
                 detailsTableBody = $("#detailsTable tbody");
             var productItem = '<tr><td>' + addFieldName + '</td><td>' + addMaxLength + '</td><td>' + addRegex + '</td><td>' + addCreatedBy + '</td><td>' + addCreatedAt + '</td><td>' + MinValue + '</td><td>' + MaxValue + '</td><td>' + FieldOrder + '</td><td>' + FriendlyFieldName + '</td><td>' + addUpdatedBy + '</td><td>' + addUpdatedAt + '</td><td>' + IsMandatory + '</td><td>' + IsActive + '</td><td>' + FieldType + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';

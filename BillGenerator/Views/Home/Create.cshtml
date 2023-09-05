@@ -177,11 +177,7 @@
 
             if ($.trim($("#fieldTypeId").val()) == "") return;
             var selectedMandatoryElement = document.querySelector("input[name='SelectedValueForMandatory']:checked");
-            //var IsMandatory = selectedMandatoryElement ? selectedMandatoryElement.value : null;
-
             var selectedActiveElement = document.querySelector("input[name='SelectedValueActive']:checked");
-           // var IsActive = selectedActiveElement ? selectedActiveElement.value : null;
-
             var FieldName = $("#FieldName").val(),
                 MaxLength = $("#MaxLength").val(),
                 Regex = $("#regex").val(),

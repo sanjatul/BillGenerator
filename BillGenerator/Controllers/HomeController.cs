@@ -167,12 +167,12 @@ namespace BillGenerator.Controllers
 
                 foreach (var orderItem in updateOrder.Order)
                 {
-                    int? intMandatory = orderItem.IsMandatory; // or any other integer value
-                    bool boolMandatory = intMandatory != 0;
-                    int? intActive = orderItem.IsActive; // or any other integer value
-                    bool boolActive = intActive != 0;
-                    // Create an OrderItem object and add it to the list
-                    BillerFormDatasetField billerFormDatasetField = new BillerFormDatasetField
+                int? intMandatory = orderItem.IsMandatory; // or any other integer value
+                bool? boolMandatory = intMandatory != null ? (intMandatory != 0) : (bool?)null;
+                int? intActive = orderItem.IsActive; // or any other integer value
+                bool? boolActive = intActive != null ? (intActive != 0) : (bool?)null;
+                // Create an OrderItem object and add it to the list
+                BillerFormDatasetField billerFormDatasetField = new BillerFormDatasetField
                     {
 
                         FieldName = orderItem.FieldName,
@@ -226,12 +226,6 @@ namespace BillGenerator.Controllers
         }
 
         #region API CALLS
-        //public  async Task<IActionResult> GetAll()
-        //{
-        //    List<BillerFormDataset> billerFormDatasets = await _context.BillerFormDatasets.Include(x=>x.Biller).ToListAsync();
-        //    return Json(new { data = billerFormDatasets });
-        //}
-
 
         public async Task<IActionResult> GetAll()
         {
