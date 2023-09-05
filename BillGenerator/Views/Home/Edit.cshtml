@@ -2,10 +2,11 @@
 <div class="card">
     <div class="card-header">
         <div class="row">
-            <div class="col-md-6"> <h1>Edit Biller Data Set</h1> </div>
-            <div class="col-md-6"><a asp-action="Index" class="btn btn-secondary">Return To List</a></div>
+            <div class="col-md-6"><h1>Biller Data Set</h1></div>
+            <div class="col-md-6 d-flex justify-content-end">
+                <a asp-action="Index" class="btn btn-secondary">Return To List</a>
+            </div>
         </div>
-        
     </div> 
     <form method="post" asp-action="Edit">
         <div class="card-body">
@@ -145,7 +146,7 @@
          
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Save Details</button>
+            <button type="submit" class="btn btn-secondary">Save Details</button>
             <a id="addFieldBtn" onclick="addNewField()" class="btn btn-primary">Add New Field</a>
         </div>
 
