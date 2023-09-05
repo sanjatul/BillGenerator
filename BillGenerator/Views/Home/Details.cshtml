@@ -72,6 +72,7 @@
                 <th>Created At</th>
                 <th>Updated By</th>
                 <th>Updated At</th>
+                <th>Field Type Id</th>
                 
             </tr>
         </thead>
@@ -80,18 +81,19 @@
             {
                 <tr>
                     <td>@Html.DisplayFor(model => field.FieldName)</td>
-                    <td>@(field.IsMandatory == true ? "Yes" : "No")</td>
+                    <td>@(field.IsMandatory == true ? "Yes" : (field.IsMandatory == false ? "No" : ""))</td>
                     <td>@field.MaxLength</td>
                     <td>@Html.DisplayFor(model => field.Regex)</td>
                     <td>@field.MinValue</td>
                     <td>@field.MaxValue</td>
                     <td>@field.FieldOrder</td>
                     <td>@Html.DisplayFor(model => field.FriendlyFieldName)</td>
-                    <td>@(field.IsActive == true ? "Yes" : "No")</td>
+                    <td>@(field.IsActive == true ? "Yes" : (field.IsActive == false ? "No" : ""))</td>
                     <td>@Html.DisplayFor(model => field.CreatedBy)</td>
                     <td>@Html.DisplayFor(model => field.CreatedAt)</td>
                     <td>@Html.DisplayFor(model => field.UpdatedBy)</td>
                     <td>@Html.DisplayFor(model => field.UpdatedAt)</td>
+                    <td>@Html.DisplayFor(model => field.FieldTypeId)</td>
                     
                 </tr>
             }

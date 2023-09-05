@@ -176,6 +176,11 @@
             e.preventDefault();
 
             if ($.trim($("#fieldTypeId").val()) == "") return;
+            var selectedMandatoryElement = document.querySelector("input[name='SelectedValueForMandatory']:checked");
+            //var IsMandatory = selectedMandatoryElement ? selectedMandatoryElement.value : null;
+
+            var selectedActiveElement = document.querySelector("input[name='SelectedValueActive']:checked");
+           // var IsActive = selectedActiveElement ? selectedActiveElement.value : null;
 
             var FieldName = $("#FieldName").val(),
                 MaxLength = $("#MaxLength").val(),
@@ -188,8 +193,8 @@
                 FriendlyFieldName = $("#friendlyFieldName").val(),
                 UpdatedBy = $("#UpdatedBy").val(),
                 UpdatedAt = $("#UpdatedAt").val(),
-                IsMandatory = document.querySelector("input[name='SelectedValueForMandatory']:checked").value,
-                IsActive = document.querySelector("input[name='SelectedValueActive']:checked").value,
+                IsMandatory = selectedMandatoryElement ? selectedMandatoryElement.value : "",
+                IsActive = selectedActiveElement ? selectedActiveElement.value : "",
                 FieldType = $("#fieldTypeId").val(),
                 detailsTableBody = $("#detailsTable tbody");
 

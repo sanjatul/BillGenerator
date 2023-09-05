@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace BillGenerator.Controllers
 {
@@ -50,9 +52,9 @@ namespace BillGenerator.Controllers
                 foreach (OrderField orderItem in orderCreate.Order)
                 {
                     int? intMandatory = orderItem.IsMandatory; // or any other integer value
-                    bool boolMandatory = intMandatory != 0;
+                    bool? boolMandatory = intMandatory != null ? (intMandatory != 0) : (bool?)null;
                     int? intActive = orderItem.IsActive; // or any other integer value
-                    bool boolActive = intActive != 0;
+                    bool? boolActive = intActive != null ? (intActive != 0) : (bool?)null;
                     // Create an OrderItem object and add it to the list
                     BillerFormDatasetField billerFormDatasetField = new BillerFormDatasetField
                     {
@@ -224,11 +226,36 @@ namespace BillGenerator.Controllers
         }
 
         #region API CALLS
-        public  async Task<IActionResult> GetAll()
+        //public  async Task<IActionResult> GetAll()
+        //{
+        //    List<BillerFormDataset> billerFormDatasets = await _context.BillerFormDatasets.Include(x=>x.Biller).ToListAsync();
+        //    return Json(new { data = billerFormDatasets });
+        //}
+
+
+        public async Task<IActionResult> GetAll()
         {
-            List<BillerFormDataset> billerFormDatasets = await _context.BillerFormDatasets.ToListAsync();
+            var billerFormDatasets = await _context.BillerFormDatasets
+                .Include(x => x.Biller)
+                .Select(dataset => new BillerFormDatasetViewModel
+                {
+                    Id = dataset.Id,
+                    BillerName = dataset.Biller.Name, // Include Biller Name
+                    BillerId = dataset.BillerId,
+                    DatasetName = dataset.DatasetName,
+                    UniqueId = dataset.UniqueId,
+                    CreatedBy = dataset.CreatedBy,
+                    CreatedAt = dataset.CreatedAt,
+                    UpdatedBy = dataset.UpdatedBy,
+                    UpdatedAt = dataset.UpdatedAt
+                    // Project other properties as needed
+                })
+                .ToListAsync();
+
             return Json(new { data = billerFormDatasets });
         }
+
+
         #endregion
 
     }
