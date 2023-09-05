@@ -357,10 +357,27 @@
             }
             clearItem();
         });
+
+        function replaceEmptyStringsWithNull(obj) {
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    if (typeof obj[key] === 'string' && obj[key] === '') {
+                        obj[key] = null; // Replace empty strings with null
+                    } else if (typeof obj[key] === 'object' && obj[key] !== null) {
+                        // Recursively call the function for nested objects and arrays
+                        replaceEmptyStringsWithNull(obj[key]);
+                    }
+                }
+            }
+        }
+
         //After Click Save Button Pass All Data View To Controller For Save Database
         function saveOrder(data) {
-            var jsonData = JSON.stringify(data);
-            console.log(data);
+            var clonedData = JSON.parse(JSON.stringify(data));
+            replaceEmptyStringsWithNull(clonedData);
+            console.log(clonedData);
+            var jsonData = JSON.stringify(clonedData);
+            console.log(jsonData);
             return $.ajax({
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
